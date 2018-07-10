@@ -1,0 +1,80 @@
+\chapter{Conclusion}
+
+    In this thesis, we introduce the concept of using deep neural networks to classifying loans into two classes, Default or Fully Paid. We began by outlining the motivation for the research and providing an overview of the previous related literature. This literature showed that metrics such as loan age, FICO, Loan-to-Value ratio, Debt-to-Income ratio and local economic factors correlate with mortgage foreclosure rates and prepayment likelihood. We then produced a technical background of the methods that were introduced later in the paper. 
+    
+    Subsequently, we detailed the techniques used to load and prepare the data for training and discussed our approach to analysing existing features where we showed a correlation between features such as FICO score and increased occurrence of default loans. We then outlined how we created new features based on geography and loan performance information from within the dataset, as well as introduce additional economic data which included Housing Price Index, Unemployment rates, and National Interests rates. Subsequently, we created the same set of features but which only consider the recent past, i.e. the last 12 months. We found that these indicators are more effective when applied to economic and geographical based features and less so when applied to individual loan performance features. 
+    
+    In our results section, we compared a variety of methods where we evaluated the model performance under each using 5-fold cross validation. We confirmed that a deep neural network (0.984 AUC) significantly outperformed a basic linear regression model (0.799 AUC), therefore validating the performance benefits of neural network models in this domain. 
+    
+    If we compare our work to similar research as published by \cite{similar_paper_bagherpour} and \cite{similar_paper_deng}, both papers implement models that attempt to classify loans that are 'Paying' versus 'Default' (our work looks at 'Default' versus 'Fully Paid' and does not consider active loans) using a logistic regression model. They achieved AUC scores of 0.860 and 0.968 respectively. Our results compare favourably to these. However, we did note that there is a difference in the exact classification objective between their research and our paper. 
+    
+    We showed that the addition of novel features improved the classification performance increasing the AUC score from 0.893 to 0.984. As far as we are aware, many of the features introduced in the economic vector, $\textbf{$\textbf{$\mathbf{E_{B}}$}$(t)}$, have not been previously researched in academic literature. We believe that this is due to limitations in data source up to now, and also the computational requirement to process data on this scale. We, therefore, believe this provides a new and useful contribution to the field. 
+    
+    
+    
+   
+
+    \section{Applications}
+    
+        The model has many potential applications. It could be used by risk departments in financial institutions to more accurate value loan portfolios, helping to determine their exposure on current assets holdings. It could also be used by asset managers directly to determine the strength and valuation of different Mortgage-Backed-Securities. 
+        
+        We see viable commercial applications where the model could be used in conjunction with other indicators in an ensemble process. As we discussed in chapter \ref{chpt: background}, banks are expected to have adequate early warning systems in place to identify and monitor high-risk loans ahead of time. The type of model we are proposing in this thesis could, as part of a larger decision process, contribute to such an early warning system. 
+        
+        If we consider how this type of model would be used in practice, we believe that the Cost-Sensitive Learning approach would be beneficial. Although it does not directly impact the results of this paper, the ability to control the trade-off point between Recall, Specificity and AUC could be advantageous given different outside objectives. For example, in the medical industry it is used to reduce the chance of a false positive; see \cite{undersampling_CSL_medical}.    
+
+    \section{Limitations}
+        The ability of our findings to generalise across multiple countries may be limited as our dataset is restricted to only the United States. Although we have found new features which help the classifier to separate between Fully Paid and Default loans, these same features may not result in increased performance if considering data from another economy. 
+        
+        A limitation of our approach in practice is that we disregard a large number of loans because they are still active. One approach could be to train two models, one that looks at the outcome of a loan at termination and another which attempts to predict its active state at some future point in time. 
+        
+        Another limitation is that we only compare our neural network model to a linear regression model. We believe that in order to fully evaluate the effectiveness of deep learning for the classification of mortgages, the results of other machine learning methods such as Support Vector Machines and Random Forest algorithms should be analysed and compared. 
+        
+    
+    
+    \section{Future work}
+        
+        \subsubsection{Mortgage Prediction}
+
+            This thesis has evaluated the predictive performance of deep neural networks in classifying loans into two classes, Default or Fully Paid. The classification task has been performed on a broad spectrum of loans spread across the United States.
+            
+            Future work could include an investigation into specific sub-classes of loans. For example, it would be interesting to know how well a neural network would perform using only Non-Performing Loans (NPLs)\footnote{Loans are Non-Performing if they are 90+ days delinquent}. Similarly, it would be interesting to build separate models for different clusters within the data, for example, a predictive model for each state within the USA. 
+        
+        \subsubsection{Deep Learning}
+            We believe that further research is required to understand the optimum re-sampling ratio better when using a weighted loss function. In overcoming the issue of an imbalanced dataset, we used a weighted loss function and a random under-sampling method with a class ratio of 15:85 (Default : Fully Paid). We observe an interesting relationship between the re-sampled class ratios and the performance of the model; as the re-sample ratios move from 15:85 to 50:50, the classification performance decreases. However, if we compare ratio 15:85 to 0.1:99.9 (where no re-sampling method has been applied), we also observe a decrease in performance. We cannot definitively explain why this is the case, however, our hypothesis can be seen in section \ref{random_under_sampling}. 
+            
+            A method we overlooked due to time limitations was that of an ensemble approach. This approach combines multiple models where the output is the average taken across all the classifiers. This type of approach is known to limit overfitting and reduce the variance of the prediction. It can also be advantageous because typically the network converges at different local minimums due to the variation in weight initialisation (discussed in Section \ref{weight_initalisation}) and randomised ordering of the mini-batch samples (discussed in Section \ref{mini_batch}. It would be interesting to evaluate whether an ensemble method with multiple neural networks, or even different machine learning methods would improve overall classification performance. 
+
+   
+
+    
+    
+        
+
+    % \section{Mortgage Portfolio Analysis}
+        
+        
+        % A portfolio with uninterrupted cash-flow is desired when constructing a pool of loans as an investor. Interrupted cash flows are caused by loan delinquency, whereby the individual defaults on the loan, or early prepayment, where the individual pays back the loan before the maturity date. Both of these circumstances cause an investor to lose money. Defaulting on a loan means that the vendor has to recoup the debt, usually through a back-security, i.e. a property, that is attached to the loan. This process usually takes a significant amount of time and leads to a net loss on the original loan on behalf of the investor. Similarly, early prepayment can lead to even more risk to the investor. It is common for lenders to issue debt in a secondary market at an interest rate lower than the offered mortgage rate, in order to offset their liabilities. For example, a lender loans money at 5\% for 20 years and offsets that by issuing debt at 3.5\% for 10 years. If the loan is paid back after only 6 years, the lender has to continue paying 3.5\% on the debt issue in the secondary market for the remaining 4 years. This situation can arise when a central bank drastically cuts interest rates, and the individual takes out another loan with a new lender at a lower interest rate, allowing them to pay back their original loan. 
+        
+        
+    %  \unsure[inline]{Should I continue with this and do some clever mortgage portfolio selection? Comparing the NN model to a linear model, for example? }
+
+        
+        % The importance of loan default and early prepayment is reflected in our choice of models. We see from model X, that we are able to estimate probabilities for the status of each loan for 1 to 18 months into the future. We determine that a loan that is unlikely to default or prepay, is one that has the highest probability of having a Current status at every point over the next 18 months.
+        
+        % For our Mortgage Portfolio Analysis, we propose an ensemble model that combines model X and Y, where model Y acts as an additional safety check to avoid selecting loans that are likely to default. We sort the loans on the following attributes in order of importance:
+        
+        % 1. Model Y: Probability of default (low to high)
+        % 2. Model X: Probability that Status equals Current at 1 month look ahead (high to low)
+        % 3. Model X: Probability that Status equals Current at 2 month lookahead (high to low)
+        
+        % 19. Model X: Probability that Status equals Current at 18 month lookahead (high to low)
+        
+        % We round all Model X Probabilities to 2.d.p. 
+
+        % We perform our selection process on 200,000 out-of-sample data samples at a specific point in time. We select a pool of 20,000 loans as of January 2009, for both the proposed ensemble model and a linear regression model. The results can be seen in figure X, which shows  The Amount Loaned to Amount Paid-back Ratio over time.
+        
+        
+
+    
+        
+   

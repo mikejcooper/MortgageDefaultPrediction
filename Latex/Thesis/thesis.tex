@@ -1,0 +1,57 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%      This is thesis.tex.  You have to  put this file in       % 
+%              the same directory with your thesis files.       %
+%                Written by M. Imran 2001/06/18                 % 
+%                 No Copyright for this file                    % 
+%                 Save your time and enjoy it                   % 
+%                                                               % 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass{dmathesis}
+
+%% uncommand the following line to print equation labels next to
+%% equation numbers. 
+\usepackage{showlabel}
+%% The following is to control the format of your thesis
+\input{format}
+
+%% File to be included while running latex.
+\includeonly{
+Chapters/1chapter_Introduction,
+Chapters/2chapter_Background,
+Chapters/3chapter_LiteratureReview,
+Chapters/4.5chapter_Models,
+Chapters/4chapter_Methodology,
+Chapters/5chapter_Results,
+Chapters/7chapter_Conclusion,
+refs,
+append}
+
+\begin{document}
+
+% \listoftodos[Notes]
+
+
+%% Front page of thesis
+\input{frontpage}
+
+%% Main text
+% set page number starts from 1
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+%% To ensure the equation counter works correctly
+\eqlabon
+\eqlaboff
+
+\include{Chapters/1chapter_Introduction}
+\include{Chapters/2chapter_Background}
+\include{Chapters/3chapter_LiteratureReview}
+\include{Chapters/4chapter_Methodology}
+\include{Chapters/4.5chapter_Models}
+\include{Chapters/5chapter_Results}
+\include{Chapters/7chapter_Conclusion}
+\include{refs}
+\include{append}
+
+% \include{append}
+\end{document}

@@ -1,0 +1,101 @@
+\chapter{Background} \label{chpt: background}
+
+    \section{Credit Risk}
+
+
+        This section introduces the concept of different credit scores and outlines how these are used in this paper.  
+    
+        % \subsection{Introduction}
+        
+        %     The 2007-09 financial crisis has been described as the worst financial event since the Wall Street Crash in the early twentieth century which led the Great Depression. There is overwhelming evidence which suggests that poorly executed risk management was one of the leading factors that led to this downfall; see \cite{risk_management1}, \cite{risk_management2}, \cite{risk_management3}. For example, Goldman Sachs adjusted its positions in mortgage-backed securities\footnote{A mortgage-backed security (MBS) is type of asset-backed security that is secured by a set of mortgages} (MBS) in 2006, which differentiated themselves from the rest of the market, and is one explanation as to why they avoided the substantial losses suffered by Bear Stearns, Merrill Lynch, Lehman Brothers and others; see \cite{risk_management_lessons}. 
+            
+        %     Since then, there appears to have been a significant investment by banks and other asset management institutions into risk management in general, as explained by \cite{risk_management_five_years_on_ey}. However, after many independent examinations on both large and medium-sized banks, there is still a concern. One such assessment conducted by De Nederlandsche Bank in 2015 concluded that "banks must improve their mortgage portfolio credit risk management." Specifically, they expect banks to have adequate early warning systems in place to identify and monitor high-risk loans ahead of time. The type of model we are proposing in this thesis could, as part of a more extensive decision process, contribute to such an early warning system.  
+            
+        %     If we look consumer level spending in general capacity, the \citeauthor{labor_stats} states that in Q4 2017, consumer spending accounted for about 65\% of U.S. Gross Domestic Product (GDP). It also reports that there is \$3.8 trillion of outstanding consumer credit and in the last quarter of 2017, revolving credit\footnote{A line of credit where the customer can repeatedly borrow up to certain limits as long as the repayments are made on time.} accounted for over 26\% (\$1.03 trillion). A 0.5\% increase in identifying risky loans could prevent loss of over \$5 billion. The continuous social and economic changes in our environment significantly affect consumer spending; see \cite{consumer_spending}. These changes put increasing importance on building accurate models to limit financial risk on behalf of the mortgage vendor.
+            
+        \subsection{Credit Scoring}
+            A credit score is a numerical value used to represent an individuals credit worthiness. \cite{risk_management1} states that a credit score is primarily determined from a credit report issued by credit bureaux, which typically include payment history, debt, the length of time the individual has been on file, account diversity and the number of new credit inquiries. 
+            
+            A financial institution often uses a credit score to help decide whether an individual should be accepted for a loan or not. Commonly, providers use a threshold system, whereby customers who have a score above the threshold are less risky, and more likely to meet the financial repayment obligations; see \cite{consumer_spending}. 
+            
+            There are two types of credit scoring: application scoring and behavioural scoring. Application scoring is determined at the start of the loan, whereas behavioural scoring is used as an ongoing metric over some period of time. Only the application score, which we refer to as the 'FICO' score, is provided within the dataset. We do however create additional features which attempt to capture the trends of ongoing loans, and we use these as behavioural scoring metrics; discussed in more detail in section \ref{4: Monthly_update_features}.
+        
+    \section{Resampling and Normalisation}
+    
+        This section provides an overview of the different normalisation and resampling techniques that we later compare in the results section (\ref{5: Results}).
+        
+        \subsection{Resampling Methods}
+            Resampling methods allow for repeated sampling of the original data to build a new sample distribution. There are two main types of resampling, under-sampling and over-sampling. Resampling methods have been shown to improve classification performance when handling imbalanced data; see \cite{imbalance_methods}. They are typically used to obtain more equal class ratios, where either the minority class is over-sampled, or the majority class is under-sampled.  
+            
+            \subsubsection{SMOTE} \label{SMOTE}
+                The Synthetic Minority Over-Sampling Technique (SMOTE) was introduced by \cite{SMOTE}; since its introduction it has become a widely used and researched oversampling technique. As explained by \cite{imbalance_methods_2}, the algorithm creates synthetic instances that belong to the minority class, and, in general, have been extrapolated from existing minority class instances. A new synthetic instance is created by randomly selecting a minority class instance, it then uses the nearest neighbour search algorithm to find the $k$-nearest minority class samples. The new instance is created by selecting a neighbour at random, taking the vector between the neighbour and the original instance, and multiplying by $x$, where $x$ is a random value between 0 and 1. This vector is then added to the original instance to create a new synthetic instance. 
+                
+                There are a few disadvantages to the SMOTE algorithm. It is computationally expensive to perform SMOTE on a large dataset because, as stated by \cite{knn}, the time complexity of the $k$-nearest neighbour method is linear to the size of the training dataset. Another problem is that SMOTE can lead to the newly synthesised instances which are very similar to existing samples which increases the probability of overfitting\footnote{Overfitting is where the model fits the training data too closely which adversely affects its ability to generalise.} the data, as explained by \cite{imbalance_methods_2}.
+                
+            \subsubsection{Random Under-sampling} \label{under_sampling}
+                Random under-sampling is where instances from the majority class are removed at random until some desired number of samples is reached, while at the same time preserving the minority class. Typically, under-sampling is suitable for large datasets where the potential loss of information from removing random samples is less. However, it is not uncommon for under-sampling to result in worse classification performance due to this loss in information. While more complex undersampling methods exist, e.g. sampling specific samples that lie further from the decision boundary, research by \cite{imbalance_methods_3} showed that these methods resulted in no statistically significant improvement when compared to random under-sampling.
+                
+                
+                
+    
+                
+        \subsection{Normalisation} \label{normalisation}
+            Data normalisation is an important data pre-processing step which enforces the integrity of the data by ensuring consistency across all the values. This consistency is especially important when training deep neural networks, as significantly different values across features can cause the weights in the network to favour features with more extreme ranges. The normalisation techniques we have chosen are Min-Max, Z-Score and Decimal Point normalisation, as compared by \cite{normalisation_comparison}.
+            
+            \noindent The formula for \textbf{Min-Max normalisation} is shown in equation \ref{min_max_norm}: 
+            
+                \begin{equation} \label{min_max_norm}
+                    X' = \frac{X - X _{min}}{X _{max} - X _{min}} \quad ,
+                \end{equation}
+                \begin{adjustwidth}{2.5em}{0pt}
+                    where,
+                    \begin{itemize}[label=]
+                        \item $X'$: the new value;
+                        \item $X$: the current value;
+                        \item $X _{min}$: the minimum value in dataset;
+                        \item $X _{max}$: the maximum value in dataset.
+                    \end{itemize}
+                \end{adjustwidth}
+            
+            
+            
+            \vspace{20pt} \noindent The formula for \textbf{Z-Score normalisation} is shown in equation \ref{z_score_norm}: 
+            
+                \begin{equation}\label{z_score_norm}
+                    X' = \frac{X - \bar{X}}{\sigma} \quad ,
+                \end{equation}
+                \begin{adjustwidth}{2.5em}{0pt}
+                    where,
+                    \begin{itemize}[label=]
+                        \item $X'$: the new value;
+                        \item $X$: the current value;
+                        \item $\bar{X}$: the mean of feature column associated with X;
+                        \item $\sigma$: the standard deviation of feature column associated with X. 
+                    \end{itemize}
+                \end{adjustwidth}
+    
+    
+            \vspace{20pt} \noindent The formula for \textbf{Decimal Point normalisation} is shown in equation \ref{dp_norm}: 
+            
+                \begin{equation} \label{dp_norm}
+                    X' = \frac{X}{10 ^ j} \quad ,
+                \end{equation}
+                \begin{adjustwidth}{2.5em}{0pt}
+                    where,
+                    \begin{itemize}[label=]
+                        \item $X'$: the new value;
+                        \item $X$: the current value;
+                        \item $j$: the smallest integer such than \textbf{Max}($| X' |$) $<$ 1.
+                    \end{itemize}
+                \end{adjustwidth}
+
+
+        \subsubsection{Conclusion}
+            In this chapter we have outlined what types of credit scored exists within the dataset, and provided a technical introduction to different normalisation and resampling techniques.            
+    
+    
+    
+        
+    
+    
+        

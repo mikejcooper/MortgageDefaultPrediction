@@ -1,0 +1,107 @@
+\chapter{Introduction} \label{chpt: Introduction}
+
+    
+    Predicting mortgage delinquency\footnote{Delinquency is the term used when a borrower has failed to make scheduled repayments as defined in the loan documents.} is a non-trivial problem due to a large number of variables that affect the outcome of a loan (discussed in section \ref{related_work}). Typically, for an individual to first hold a mortgage, some background check must have been completed whereby a suitable candidate is accepted, and an unsuitable candidate is rejected. This process should, in theory, constrain the pool of accepted candidates making the challenge of predicting the outcome more difficult. 
+    
+    We propose the use of machine learning methods to address this problem. They are typically well suited to finding non-linear relationships, the nature of which were otherwise not considered by the mortgage lender at both the time of issue and during the lifetime of the loan. This work focuses on Deep Neural Networks, as they are known for their ability to learn intermediate features between high dimensional data and high-level classification. 
+    
+    % In finance, there are many obstacles when acquiring detailed, large-scale datasets. For example, privacy of financial data is one such problem, especially when applied to mortgage data. As a consequence, the abundance of publicly available datasets in this domain is small, and many of the papers published are working with the similar public data. These are commonly small subsamples of much more substantial datasets, the size of which is particularly problematic when training deep neural networks. As such, the majority of academic publications that address mortgage prediction finds that machine learning models such as Support Vector Machines (SVM), and Random Forest algorithms, outperform deep learning networks such as a small Multilayer Perceptron (MLP). 
+    
+    The purpose of this thesis is to implement a neural network model which can effectively differentiate between loans that are likely and unlikely to default. The models will be trained using the Freddie Mac Single-Family dataset from 1996 to 2016. This work compares a variety of deep learning methods; these include resampling, normalisation, regularisation and cost-sensitive learning. We also evaluate performance under different feature selections and model architectures, where all comparisons are evaluated using 5-fold cross-validation. The specific classification task is to predict whether a mortgage, with n features, is more likely to be Fully Paid (i.e. the borrower pays back in full) or Default (i.e. the borrower defaults on the loan). 
+    
+
+    \section{Motivation}
+        The 2007-09 financial crisis has been described as the worst financial event since the Wall Street Crash in the early twentieth century which led to the Great Depression. There is overwhelming evidence which suggests that poorly executed risk management was one of the leading factors that led to this downfall; see \cite{risk_management1}, \cite{risk_management2}, \cite{risk_management3}. For example, Goldman Sachs adjusted its positions in mortgage-backed securities\footnote{A mortgage-backed security (MBS) is type of asset-backed security that is secured by a set of mortgages} (MBS) in 2006, which differentiated themselves from the rest of the market, and is one explanation as to why they avoided the substantial losses suffered by Bear Stearns, Merrill Lynch, Lehman Brothers and others; see \cite{risk_management_lessons}. 
+            
+        Since then, there appears to have been a significant investment by banks and other asset management institutions into risk management in general, as explained by \cite{risk_management_five_years_on_ey}. However, after many independent examinations on both large and medium-sized banks, there is still a concern. One such assessment conducted by De Nederlandsche Bank in 2015 concluded that "banks must improve their mortgage portfolio credit risk management". Specifically, they expect banks to have adequate early warning systems in place to identify and monitor high-risk loans ahead of time. The type of model we are proposing in this thesis could, as part of a larger decision process, contribute to such an early warning system.  
+        
+        If we look at consumer level spending in general capacity, the \citeauthor{labor_stats} states that in Q4 2017, consumer spending accounted for about 65\% of U.S. Gross Domestic Product (GDP). It also reports that there is \$3.8 trillion of outstanding consumer credit and in the last quarter of 2017, revolving credit\footnote{A line of credit where the customer can repeatedly borrow up to certain limits as long as the repayments are made on time.} accounted for over 26\% (\$1.03 trillion). A 0.5\% increase in identifying risky loans could prevent loss of over \$5 billion. The continuous social and economic changes in our environment significantly affect consumer spending; see \cite{consumer_spending}. This puts increasing importance on building accurate models to limit financial risk on behalf of the mortgage vendor. 
+        
+        The societal motivation for this research has been outlined above; we will now introduce the technical motivations in more detail. In recent years, there has been a significant increase in Deep Learning research; Gartner, Inc. predicts that, by 2019, deep learning neural networks will underpin the systems that performance best in three areas relevant to the financial sector: demand, fraud and failure predictions. The escalation in the field of deep learning has mainly been due to a number of aspects; improved availability of high-quality data, increased computational processing capacity (Graphical Processing Units (GPUs) specifically), improved mathematical formulas and more easily accessible frameworks such as Google\’s Tensorflow. These improvements have allowed data scientists to add significantly more layers within a network than previously possible, this addition has lead to the impressive results we see today; see \cite{nn_overview}.
+        
+        We believe the societal and technical motivations are significant, providing a high incentive to explore these two domains in more detail. 
+        
+        
+        % There was an opportunity to work with an industry partner who has made a large propriety data set available. The dataset comprises of over 120 million mortgages which originated across the United States (US) between 1999 and 2016. Given that there has previously only been one published paper \cite{mortgage_risk} in 2016 on a dataset of equivalent size in the domain of deep learning, the opportunity to work with a unique, and large-scale dataset made this line of research compelling. 
+    
+        
+        
+    \section{Related Literature} \label{related_work}
+    
+        The application of Machine Learning, specifically Deep Learning, in the financial domain is a relatively new concept, and as such, there exists only a small selection of related literature. However, there is an abundance of previous research into mortgage default in general. This section is therefore split into two parts; General, which will focus on research that analyses factors that affect mortgage default as well as prepayment\footnote{Mortgage prepayment is where the borrower repays the mortgage before the end of the loan term.}, and Machine Learning, which focuses on machine learning research specifically used to predict mortgage default.  
+            
+        \subsection{General}
+        
+            In 1969, \citeauthor{default_risk_1969} released a paper that quantitatively analysed the impact of loan-to-value ratio, income and loan age on mortgage default rates. With the use of simple regression models, he concluded that there was significant correction between these variables and mortgage default rates. Subsequently, \citeAY{default_risk_1978}, \citeAY{default_risk_1982}, \citeAY{default_risk_1983}, and others all published research examining additional variables and their impact on mortgage default rates. 
+           
+            In 1998, \citeauthor{foreclosure_single_family_1998} analysed a subset of Federal Housing Administration (FDA) loans that had defaulted, finding that Loan-to-Value ratio is a significant indicator of whether a delinquent loan will be either reinstated, sold or foreclosed. Similarly, \citeAY{default_risk_2006} analysed a subset of sub-prime mortgages that had defaulted. Using a multinomial logistic regression model they found that loans with higher interest rates were less likely to enter the state, Real Estate Owned (REO), whereas loans with fixed interest rates and higher Loan-to-Value ratios had higher foreclosure probability. 
+            
+            In 2005, \citeauthor{default_risk_2005} analysed a subset of fixed-rate mortgages which originated between 1996 and 2003. Using a multinomial logit model they found that loans with a higher FICO (credit scores) and longer periods of delinquency were associated with a higher probability of prepayment when compared to foreclosure. Whereas they found that negative equity\footnote{Negative equity occurs when the value of an asset used to secure the loan is less than the current unpaid balance.} was associated with a higher probability of foreclosure when compared to prepayment. Following this research, \citeauthor{default_risk_2005} released another paper in 2008 which analysed a larger sample (5,000 subprime mortgages) of the dataset over the same period. They found that loans with a higher FICO (credit scores) and longer periods of delinquency were less likely to foreclosure, but, in contrast to their last publication, they were also less likely to prepay. They also found that housing price volatility was a significant indicator of foreclosure, whereas unemployment rates were not correlated; see \cite{default_risk_2008}.
+            
+            \cite{default_risk_2012} analysed mortgages that originated between 2004 and 2006 at a national level across the United States. After supplementing the mortgage data with economic data from the U.S. Bureau of Labor Statistics, they found that "default outcomes are affected by local economic and housing market conditions, the amount of equity in the home, and the state’s legal environment". 
+            
+            \cite{default_risk_2011} published a paper detailing their findings on mortgages that originated between 2003 and 2008 in New York City. In an empirical study, they found that loans with higher current balances, larger Loan-to-Value ratios and steeper declines in FICO score, are more likely to default or be refinanced. They also found an association between neighbouring characteristics and higher default rates. These areas include; districts where house price depreciation is greater than 10 percent in the past year and locations that see a sharp increase in the rate of foreclosure within the last six months.
+            
+
+            
+        
+        \subsection{Machine Learning}
+
+            More recently, \cite{mortgage_risk} published research examining the effectiveness of a deep neural network at predicting the status\footnote{The status of a loan is defined in this work as either current, 30, 60, 90+ days delinquent, Foreclosed, REO (Real-Estate Owned) or Fully Paid} of a loan. They used a licensed dataset from CoreLogic with mortgages that originated from 1995 to 2014 covering roughly 70\% of all mortgages originated in the US. Their results show the significance of local economic factors and state unemployment rates for explaining borrowers behaviour as well as improving the model's performance. 
+            
+            The research that is most aligned with this thesis has been published by \cite{similar_paper_bagherpour} and \cite{similar_paper_deng}, both papers implement models that attempt to classify loans that are 'Paying' versus 'Default' (our work looks at 'Default' versus 'Fully Paid' and does not consider active loans, explained in more detail in section \ref{labeling}). They analysed the effectiveness of different Machine Learning methods (Support Vector Machines (SVM), Logistic Regression and Random Forrest (RF)) at predicting mortgage default on loans from the Fannie Mac 30-year fixed rate mortgage dataset.
+            
+            \cite{similar_paper_bagherpour} compares the performance of a Random Forest model with a Support Vector Machine and Logistic Regression model. The logistic regression model performs best on the 'Paying' versus 'Default' classification task achieving an Area Under the Curve (AUC)\footnote{Area Under the Curve (AUC) is a classification performance metric that considers the proportion of correctly predicted instances. The performance metrics contained within the thesis are detailed in section \ref{5: Results}.} score of 0.860. The paper states that it uses the SMOTE upsampling method (discussed in Section \ref{SMOTE}) on both the training and testing datasets to obtain the equal class ratio (50:50). We note that it is uncommon to re-sample both the test and training sets. For example, in the literature that introduces SMOTE by \cite{SMOTE}, the up-sampling technique was only performed on the test set. By applying the method to both datasets, the practical application of the model will be diminished, as real-world datasets are unlikely to have a 50:50 class ratio.  
+            
+            \cite{similar_paper_deng} compares Logistic Regression, K-Nearest Neighbors and Random Forest. Similar to A.Bagherpour, Deng shows that the logistic regression model performs best on the 'Paying' versus 'Default' classification task achieving an AUC score of 0.968. Unfortunately, Deng's work does not include specific implementation details, and as such, it is difficult to thoroughly analyse the results. 
+        
+            % \unsure[inline]{ When rest of thesis is finished, write this and make links back and forth!! }
+            
+            % There has previously only been one published paper \cite{mortgage_risk} in 2016 on a dataset of equivalent size in the domain of deep learning. However, there has been extensive research published on much smaller datasets which address a similar problem of Mortgage Application Prediction, i.e. Whether an individuals mortgage application should be accepted or not. Interestingly, there are a number of techniques used that were not applied to the 2016 paper. This research will evaluate whether these same improvement methods are successful when applied to our dataset. 
+
+    % \section{Outline}
+    
+    %     This thesis outlines X in chapter Y .. comment. Repeat for all chapters. 
+
+    %     \unsure[inline]{ Fill in at end }
+
+
+        \subsubsection{Conclusion}
+            In this chapter, we outlined the motivation for the research and provided a brief introduction to previously published work in the field of mortgage default. This research showed that metrics such as loan age, FICO, Loan-to-Value ratio, Debt-to-Income ratio and local economic factors appear to correlate with mortgage foreclosure rates and prepayment likelihood. Finally, we introduce two pieces of literature, \citeAY{similar_paper_bagherpour} and \cite{similar_paper_deng}, that implement models similar to that which are proposed in this work, where they achieved an optimal AUC score of 0.860 and 0.968 respectively.  
+            
+            
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+            % In 1974, Curley \& Guttentag conducted one of the earliest studies which analysed factors that influence early prepayment and how that affect future cash flows. They concluded that prepayments are often a results of reduced interest rates, and that such events can negatively impact the cash-flow of the mortgage vendor. Following this research, Green \& Shoven (1986) and Richard \& Roll (1989) further examined external factors such as refinance incentive, seasonality and burnout, focusing on how they affect early prepayment probability. Green and Shoven argued that it is “important to recognize that the primary determinants of the decision to sell a house are not related to interest rate fluctuations. They are largely concerned with the personal circumstances of the owner: job changes, births of children, changes in family income or wealth, changes in taste for the type of housing, divorce, marriage, etc.”. 
+            
+            % Capozza (1997) and Ambrose & Deng (2001) wrote papers analysing the effect of small down payments and house price fluctuation on mortgage default rates. 
+
+            
+
+
+
+

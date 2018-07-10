@@ -1,0 +1,242 @@
+% \appendix
+% \setcounter{chapter}{0}
+% \renewcommand{\chaptername}{Appendix}
+% %\renewcommand{\thechapter}{\arabic{section}.\arabic{ind}}
+% \renewcommand{\theequation}{\Alph{chapter}.\arabic{section}.\arabic{equation}}
+% \setcounter{equation}{0}
+% \chapter{Basic and Auxiliary Results}
+% \section{Basic Results}
+% \addcontentsline{toc}{chapter}{\numberline{}Appendix}
+
+
+% \lhead[\fancyplain{}{}]%
+%       {\fancyplain{}{\bfseries A Appendix}}
+      
+
+
+\begin{appendices}
+\renewcommand{\thefigure}{A.\arabic{figure}}
+\renewcommand{\thetable}{A.\arabic{table}}
+
+
+
+
+% ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+% \section*{Loan Feature Descriptions} \addcontentsline{toc}{section}{\numberline{}Loan Feature Descriptions}
+
+    \begin{table}[h]
+        \centering
+        \caption{Origination Feature Descriptions} \vspace{0.5cm}
+        \label{appendix: table_american_loan_features_origination}
+            \begin{tabular}{|p{4cm}|p{10cm}|}
+                \hline \textbf{Loan Features} & \textbf{Description} \\ \hline \hline
+                fico & \textbf{FICO Credit Score} is a number, prepared by third parties, summarising the borrower’s creditworthiness. \\ \hline
+                dt\_first\_pi & \textbf{First Payment Date} is the date of the first scheduled mortgage payment.  \\ \hline
+                flag\_fthb & \textbf{First Time Buyer Flag} indicates whether the Borrower had no ownership interest (sole or joint) in a residential property during the three-year period preceding. \\ \hline
+                dt\_matr & \textbf{Maturity Date} is the month of the final scheduled payment. \\ \hline
+                cd\_msa & \textbf{Metropolitan Statical Area} is an indicator, based on a geographical region with a relatively high population density\\ \hline
+                mi\_pct & \textbf{Mortgage Insurance Percentage} is the percentage of loss coverage from mortgage insurer. \\ \hline
+                cnt\_units & \textbf{Number of Units} denotes whether the mortgage is a 1, 2, 3 or 4 unit property \\ \hline
+                occpy\_sts & \textbf{Occupancy Status} denotes whether the mortgage type is owner occupied, second home, or investment property. \\ \hline
+                cltv  & \textbf{Combined Loan-To-Value} is the ratio obtained by dividing all of the borrowers outstanding mortgage loan amounts by the appraised value of all mortgaged property’s. \\ \hline
+                dti & \textbf{Debt-To-Income} is the debt to income ratio of the borrower. \\ \hline
+                orig\_upb & \textbf{Original Unpaid Principal Balance} is the portion of the loan at origination that has not yet been remitted to the lender. \\ \hline
+                \multicolumn{2}{r}{\textit{Continued on next page}} \\
+            \end{tabular}
+    \end{table}
+    
+    \clearpage
+    
+    \begin{center}
+        \centering
+            \begin{tabular}{|p{4cm}|p{10cm}|}
+                \multicolumn{2}{r}{\textit{Continued from previous page}} \\
+                
+                \hline \textbf{Loan Features} & \textbf{Description} \\ \hline \hline
+                ltv & \textbf{Loan-To-Value} is the ratio obtained by dividing the original mortgage loan amount by the mortgaged property’s appraised value. \\ \hline
+                int\_rt & \textbf{Interest Rate} is the original rate as indicated on the mortgage note. \\ \hline
+                channel & \textbf{Channel} is the third part that disclosed the mortgage (Retail, Broker, Correspondent) \\ \hline
+                ppmt\_pnlty & \textbf{Prepayment Penalty Mortgage Flag} Denotes whether the mortgage is a PPM. Meaning a borrower obligated to pay a penalty in the event of certain repayments of principal. \\ \hline
+                prod\_type & \textbf{Product Type} Denotes that the product is a fixed-rate mortgage. \\ \hline
+                st & \textbf{State} is a two-letter abbreviation indicating a US state. \\ \hline
+                prop\_type & \textbf{Property Type} Denotes whether the property type secured by the mortgage is a condominium, leasehold, planned unit development (PUD), cooperative share, manufactured home, or Single Family home. \\ \hline
+                zipcode & \textbf{Post/Zip Code} is the postal code for the location of the mortgaged property \\ \hline
+                id\_loan & \textbf{Loan Sequence Number} is the unique identifier assigned to each loan. \\ \hline
+                loan\_purpose & \textbf{Loan Purpose} Indicates whether the mortgage loan is a Cash- out Refinance mortgage, No Cash-out Refinance mortgage, or a Purchase mortgage. \\ \hline
+                \multicolumn{2}{r}{\textit{Continued on next page}} \\
+            
+            \end{tabular}
+    \end{center}
+
+    \clearpage
+
+    \begin{center}
+        \begin{tabular}{|p{4cm}|p{10cm}|}
+            \multicolumn{2}{r}{\textit{Continued from previous page}} \\
+
+            \hline \textbf{Loan Features} & \textbf{Description} \\ \hline \hline
+            orig\_loan\_term & \textbf{Original Loan Term} is a calculation of the number of scheduled monthly payments based on the First Payment Date and Maturity Date. \\ \hline
+            cnt\_borr & \textbf{Borrower Count} is the number of Borrower(s) who are obligated to repay the mortgage note. \\ \hline
+            seller\_name & \textbf{Seller Name} is the entity acting in its capacity as a seller of mortgages. \\ \hline
+            servicer\_name & \textbf{Servicer Name} is the entity acting in its capacity as the servicer of mortgages. \\ \hline
+            flag\_sc & \textbf{Super Conforming Flag} indicates mortgages that exceed conforming loan limits with origination dates on or after 10/1/2008 and settlements on or after 1/1/2009. \\ \hline  
+        \end{tabular}
+    \end{center}
+    
+    \footnotesize{[\citenum{freddy_mac_guide}]}
+
+% ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    \begin{table}[h]
+    \centering
+    \caption{Original Monthly Performance Feature Descriptions} \vspace{0.5cm}
+    \label{appendix: table_american_loan_features_monthly}
+        \begin{tabular}{|p{4cm}|p{10cm}|}
+            \hline \textbf{Loan Features} & \textbf{Description} \\ \hline \hline
+            id\_loan & \textbf{Loan Sequence Number} is the unique identifier assigned to each loan. \\ \hline
+            svcg\_cycle & \textbf{Monthly Reporting Period} is the as-of month for loan information contained in the loan record. \\ \hline  
+            current\_upb & \textbf{Current Unpaid Principal Balance} is the portion of the loan at current time that has not yet been remitted to the lender. \\ \hline
+            delq\_sts & \textbf{Delinquency Status} is a value corresponding to the number of days the borrower is delinquent (overdue). \\ \hline  
+            loan\_age & \textbf{Loan Age} is the number of months since the note origination month of the mortgage. \\ \hline  
+            mths\_remng & \textbf{Months Remaining} is the remaining number of months to the mortgage maturity date. \\ \hline  
+            repch\_flag & \textbf{Repurchase Flag} indicates loans that have been repurchased. \\ \hline  
+            flag\_mod & \textbf{Modification Flag} indicates mortgages with loan modifications. \\ \hline  
+            cd\_zero\_bal & \textbf{Zero Balance Code} is a code indicating the reason the loan's balance was reduced to zero. \\ \hline  
+            dt\_zero\_bal & \textbf{Zero Balance Date} is the date on which the event triggering the Zero Balance Code took place. \\ \hline  
+            current\_int\_rt & \textbf{Current Interest Rate} is the current rate as indicated on the mortgage note. \\ \hline
+            non\_int\_brng\_upb & \textbf{Current Deferred Unpaid Principal Balance} is the current non-interest bearing UPB of the modified mortgage. \\ \hline 
+            \multicolumn{2}{r}{\textit{Continued on next page}} \\
+            \end{tabular}
+    \end{table}
+    
+    
+    \clearpage
+    
+    \begin{center}
+        \centering
+            \begin{tabular}{|p{4cm}|p{10cm}|}
+                \multicolumn{2}{r}{\textit{Continued from previous page}} \\
+                \hline \textbf{Loan Features} & \textbf{Description} \\ \hline \hline
+                dt\_lst\_pi & \textbf{Date of Last Paid Instalment} is the due date that the loan’s scheduled principal and interest is paid through, regardless of when the instalment payment was actually made. \\ \hline  
+                mi\_recoveries & \textbf{Mortgage Insurance Recoveries} are the proceeds received by the vendor in the event of credit losses.\\ \hline  
+                net\_sale\_proceeds & \textbf{Net Sales Proceeds} are the amount remitted to Freddie Mac resulting from a property disposition once allowable selling expenses have been deducted from the gross sales proceeds of the property. \\ \hline  
+                non\_mi\_recoveries & \textbf{Non Mortgage Insurance Recoveries} are proceeds received by vendor on non-sale income such as refunds (tax or insurance), hazard insurance proceeds, rental receipts, positive escrow and/or other miscellaneous credits.\\ \hline  
+                expenses & \textbf{Expenses} include allowable expenses that vendor bears in the process of acquiring, maintaining and/ or disposing a property. \\ \hline  
+                legal\_costs & \textbf{Legal Costs} are the the amount of legal costs associated with the sale of the property. \\ \hline  
+                maint\_pres\_costs & \textbf{Maintenance and Preservation Costs} are the amount of maintenance, preservation, and repair costs on the property. \\ \hline  
+                taxes\_ins\_costs & \textbf{Taxes and Insurance} are the amount of taxes and insurance owed that are associated with the sale of a property. \\ \hline  
+                misc\_costs & \textbf{Miscellaneous Costs} are the miscellaneous expenses associated with the sale of the property. \\ \hline  
+                
+                \multicolumn{2}{r}{\textit{Continued on next page}} \\
+            
+            \end{tabular}
+    \end{center}
+    
+    \begin{center}
+    \centering
+        \begin{tabular}{|p{4cm}|p{10cm}|}
+            \multicolumn{2}{r}{\textit{Continued from previous page}} \\
+            \hline \textbf{Loan Features} & \textbf{Description} \\ \hline \hline
+            actual\_loss & \textbf{Actual Loss} is calculated using, 'Actual Loss' = ('Default UPB' – 'Net Sale Proceeds') + 'Delinquent Accrued Interest' - 'Expenses' – 'MI Recoveries' – 'Non MI Recoveries'. \\ \hline  
+            modcost & \textbf{Modification Cost} is the cumulative modification cost amount calculated when vendor determines such mortgage loan has experienced a rate modification event. \\ \hline   
+            \multicolumn{2}{r}{\textit{Continued on next page}} \\
+        
+        \end{tabular}
+    \end{center}
+    \footnotesize{[\citenum{freddy_mac_guide}]}
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+    
+
+    \begin{table}[h]
+    \centering
+    \caption{Zero Balance Code Descriptions} \vspace{0.5cm}
+    \label{appendix: zero_balance_codes}
+        \begin{tabular}{|p{4.5cm}|p{9.5cm}|}
+            \hline \textbf{Zero Balance Code} & \textbf{Description} \\ \hline \hline
+            01            & Prepaid or Matured (Voluntary Payoff) \\ \hline
+            03 & Foreclosure Alternative Group (Short Sale, Third Party Sale, Charge Off or Note Sale) \\ \hline
+            06 & Repurchase prior to Property Disposition \\ \hline
+            09 & REO Disposition \\ \hline
+            \end{tabular}
+        
+    \end{table}
+    \footnotesize{[\citenum{freddy_mac_guide}]}
+
+    
+% ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
+% \section*{Loan State Rules} \addcontentsline{toc}{section}{\numberline{}Loan State Rules}
+
+ 
+    \begin{table}[h]
+        \centering
+        \caption{Loan Status Rules}
+        \label{appendix: loan_state_rules}
+        \begin{itemize}
+            \item Current:
+                \begin{enumerate}
+                    \item Delinquency Status equals 0
+                \end{enumerate}
+            \item 30 Days Delinquent:
+                \begin{enumerate}
+                    \item Delinquency Status equals 1
+                \end{enumerate}
+            \item 60 Days Delinquent:
+                \begin{enumerate}
+                    \item Delinquency Status equals 2
+                \end{enumerate}
+            \item 90+ Days Delinquent:
+                \begin{enumerate}
+                    \item Delinquency Status greater than or equal to 3
+                \end{enumerate}
+            \item Foreclosed:
+                \begin{enumerate}
+                    \item Zero Balance Code equals 3
+                    \item Zero Balance Code equals 6
+                \end{enumerate}
+            \item REO (Real-Estate Owned):
+                \begin{enumerate}
+                    \item Zero Balance Code equals 9
+                    \item Delinquency Status equals 'R'
+                \end{enumerate} 
+            \item Fully Paid:
+                \begin{enumerate}
+                    \item Zero Balance Code equals 1
+                    \item Repurchase Flag equals 'N'
+                \end{enumerate}                 
+        \end{itemize}
+    \end{table}
+
+
+    
+
+    
+    
+    
+    
+\end{appendices}

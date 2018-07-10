@@ -1,0 +1,111 @@
+\chapter{Models} \label{6: models}
+    In this chapter, we introduce the prediction model definition and provide an overview of the network's hyper-parameters. We discuss implementation challenges related to the imbalanced datasets which we will refer back to in our results section. 
+    
+    \section{Default Prediction} \label{default_prediction}
+        The Default Prediction model will take as input, n mortgage features at time t, and output a prediction as to whether the mortgage is more likely to be Fully Paid (negative) or Default (positive), i.e. the borrower pays back in full, or defaults on the loan. The model outputs a value between 0 and 1; therefore we use a threshold of 0.5. Values above this point are classified as Default and below are Fully Paid. The model will consider the issue of class importance whereby a false positive prediction (a Default loan that is classified incorrectly) will be penalised at the same relative rate as a false negative prediction (a Fully Paid loan that is classified incorrectly). This will be achieved using class weights, discussed in Section \ref{class_imbalance}. We will refer to this objective as the \textit{Default, Prediction, Objective}.
+        
+        \begin{center}
+            \centering
+            \caption{Model Parameters for Default Prediction Network} \vspace{0.5cm}
+            \label{4: default_parameters}
+            \begin{tabular}{|p{6cm}|p{8cm}|}
+                \hline \textbf{Parameter} & \textbf{Description} \\ \hline \hline
+                
+                Input Features & 133  \\ \hline
+                Number of classes & 2  \\ \hline
+                Number of layers & 4  \\ \hline
+                Nodes in layers &        133 : 100 : 100 : 2 \\ \hline
+                Layer types & FC : FC$_{BN}$  : FC$_{BN}$ : FC  \\ \hline
+                Loss Function & Softmax Cross Entropy  \\ \hline
+                Activation Functions & ReLU  \\ \hline
+                Weight Initialisation & Xavier Initialiser  \\ \hline
+                Weight Regularisation & L2 Regulariser, $\lambda = 0.1$  \\ \hline
+                Learning Rate & 0.0005  \\ \hline
+                Learning Rate Type & Adaptive Learning rate, $k = 500$ (see \ref{learning_rate})  \\ \hline
+                Momentum & $m = 0.9$ (see \ref{momentum}) \\ \hline
+                Gradient Descent Optimiser & Momentum Optimiser (Tensorflow)  \\ \hline
+                Training Epochs & 750  \\ \hline
+                Training Size & 10,700,000  \\ \hline
+                Batch Size & 5,000  \\ \hline
+                Sampling Method & Under-Sampling / 15:85  \\ \hline
+                
+            \end{tabular}
+            
+            \vspace*{0.4cm}
+
+            {\footnotesize FC = Fully Connected, FC$_{BN}$ = Fully Connected with Batch Normalisation}
+
+        \end{center}  
+        
+        \subsection{Class Imbalance} \label{class_imbalance}
+            In real word problems, it is often the case that binary classification needs to be performed on an imbalanced \footnote{Where more samples belong to one class than the other.} dataset. It is also common that the unlikely events that occur in the minority class are difficult to separate from the event that occurs most often. For example, the majority of mortgage loans do not default during their active duration, but we would like to determine the probability of this event occurring. 
+            
+            In the default classification problem, there is a significant class imbalance, as shown in table \ref{table_class_dist} in section \ref{data_labelling}. This imbalance is problematic as traditional algorithms are often biased towards the majority class, whereby they prioritise overall accuracy of the classifier above the accuracy of true positive and true negative predictions. This bias occurs because the loss functions optimise for metrics such as error and accuracy scores, and do not take into account the distribution of the data. The effect of imbalanced datasets has been well researched in academia; see \cite{random_subspace_method} and \cite{imbalanced_dataset_thesis}. They can adversely affect a range of classifiers, impacting overall accuracy and negatively affecting the identification of rare features. 
+            
+            To help overcome this problem, we weight the output of the loss function proportional to the inverse class ratio for each mini-batch during training. More precisely, we create an inverse class ratio vector, $class\_weight(p)$, using the ground truth labels, $p$:
+            
+            \begin{align}
+                inv\_class\_ratio(p) = [\,
+                & \, 
+                    \, 1 - class\_ratio_0(p) , 
+                    \nonumber \\
+                & \,
+                    \, 1 - class\_ratio_1(p) \, \,]
+            \end{align}
+            
+            where $class\_ratios_0(p)$ is the class ratio for the Default (minority) class and $class\_ratios_1(p)$ is the class ratio for the Fully Paid (majority) class. The resulting effect is down-weighting the loss for the majority class and up-weighting the loss for the minority class, and this allows the loss function to treat both classes equally. 
+            
+            \subsection{Cost-Sensitive Learning} \label{cost_sensitive_learning}
+            
+                We extend the idea further by implementing a cost-sensitive learning technique, where we add a Class Weight Scale-Factor, $\gamma$, which provides the ability to favour one class over the other. The Default classification problem has not only the issue of class imbalance but also the issue of class importance; where incorrectly predicting a Default loan instance will likely result in a higher loss (in a real-world application) than incorrectly predicting a Fully Paid instance. The formula for our cost-sensitive learning technique can be seen in equation \ref{class_weight_equation}.
+                
+                \begin{align} \label{class_weight_equation}
+                    class\_weights(p) = [\,
+                    & \, 
+                        \, (\,1 - class\_ratio_0(p)\,) * \gamma , 
+                        \nonumber \\
+                    & \,
+                        \, \,(1 - class\_ratio_1(p)\,) * (2 - \gamma) \, \,] \quad,
+                \end{align}
+                
+                $where, \,\,\, 0 < \gamma < 2$.
+                
+                \vspace*{0.4cm}
+        
+                \noindent We then adapt the cost function using equation \ref{class_weight_equation} such that:
+        
+                \begin{equation} \label{input_sum_neuron}
+                        J(p, \hat{p}) = J(p, \hat{p}) * class\_weights(p) \quad,
+                \end{equation}
+                
+                \vspace*{0.5cm}
+                
+                where $\hat{p}$ is the predicted output labels, and $p$ is the real output labels. 
+                It should be noted that the Class Weight Scale-Factor, $\gamma$, is a parameter which is manually chosen before training to produce the desired Recall to Specificity ratio.
+            
+            
+        \subsection{Model Architecture} \label{research_model_arc}
+            The neural network architecture plays an important role in its ability to learn highly non-linear relationships. Determining the optimum number of hidden layers and nodes is typically very challenging without using trial and error approach on the specific dataset; as explained by \cite{book_bias_dilemma}. If a network contains too few nodes, it can lead to high error rates as the features might be too complex for the model to learn. Similarly, too many nodes will result in the model overfitting the training data, causing the out of sample performance to decrease.   
+    
+            Selecting the correct number of nodes for a given layer is not trivial. The procedure is one that is very problem specific, and the publications that address this selection process often recommended ranges that are broad. Given that, from \cite{book_bias_dilemma}, \cite{3_node_network} and \cite{nn_guide}, we can conclude that the recommended number of nodes falls between half the number of inputs and twice the number of inputs.    
+            
+            Determining the number of hidden layers is also not a simple procedure. For linear problems, it is possible to forgo the hidden layers altogether. Moreover, even if the problem is slightly non-linear, this may still be the best approach as it provides good generalisation; as explained by \cite{nn_guide}. In \cite{book_turing_nn} they state that in Multi-Layer Perceptron networks with threshold activation functions, only two hidden layers are required for full generality. Additionally, we observe that \cite{mortgage_risk}, a paper that addresses a similar deep learning problem on an imbalanced dataset of similar scale, found network depths of 3 and 5 produced the lowest loss and highest AUC. 
+            
+            % Finally  state "the number of units in the shallow network has to grow exponentially, compared to a linear growth in the deep network, so as to represent the same functions". We will infer from the above conlusion in dif
+            
+            % Nevertheless 
+            
+            Given the variety in the above observations, we compare a number of different architecture in section \ref{result_model_arc},.
+            
+            
+            
+   
+            
+            
+            
+            
+    
+    \clearpage
+ 
+
+    

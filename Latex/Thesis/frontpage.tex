@@ -1,0 +1,189 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%   This is frontpage.tex file needed for the dmathesis.cls file.  You   %
+%  have to  put this file in the same directory with your thesis files.  %
+%                Written by M. Imran 2001/06/18                          % 
+%                 No Copyright for this file                             % 
+%                 Save your time and enjoy it                            % 
+%                                                                        % 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%           The title page           %%%%%%%%%%%%%%%%%%%%%%%  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagenumbering{roman}
+% \pagenumbering{arabic}
+
+\setcounter{page}{1}
+
+\newpage
+
+\thispagestyle{empty}
+\begin{center}
+  \vspace*{1cm}
+  {\Huge \bf A Deep Learning Prediction}
+    \vspace*{0.3cm}
+  {\Huge \bf Model for Mortgage Default}
+
+  \vspace*{3cm}
+  {\LARGE\bf Michael J. Cooper}
+
+  \vfill
+
+  {\Large A Thesis presented for the degree of\\
+         [1mm] Masters of Engineering}
+  \vspace*{0.9cm}
+  
+  % Put your university logo here if you wish.
+   \begin{center}
+   \includegraphics[width=3in]{uob_logo.jpg}
+   \end{center}
+
+  {\large
+          Department of Engineering\\
+          [-3mm] University of Bristol\\
+          [-3mm] England\\
+          [1mm]  May 2018
+  }
+
+\end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%% The dedication page, of you have one  %%%%%%%%%%%%%%%%%%%%  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \newpage
+% \thispagestyle{empty}
+% \begin{center}
+%  \vspace*{2cm}
+%   \textit{\LARGE {Dedicated to}}\\ 
+%  Someone here
+% \end{center}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%           The abstract page         %%%%%%%%%%%%%%%%%%%%  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\thispagestyle{empty}
+\addcontentsline{toc}{chapter}{\numberline{}Abstract}
+\begin{center}
+  {\Large \bf A Deep Learning Prediction Model}
+    \vspace*{0.15cm}
+  
+  {\Large \bf for Mortgage Default}
+  
+  \vspace*{2cm}
+  \textbf{\large Michael J. Cooper}
+
+  \vspace*{0.5cm}
+  {\large Submitted for the degree of Masters of Engineering\\ May 2018}
+
+  \vspace*{4cm}
+  \textbf{\large Abstract}
+\end{center}
+Artificial Neural Networks (ANNs) have the ability to find non-linear correlations between sparse input data and desired outputs. This makes them well-suited to classification problems such as Mortgage Default Prediction. 
+
+This thesis explores how deep learning can be used to classify mortgages into Default or Fully Paid Loans. It compares the Recall, Sensitivity and AUC scores of different deep neural network architectures against a baseline linear classifier. This work examines the effect of different resampling, regularisation and cost-sensitive learning methods on the neural networks classification performance. The research uses the Freddie Mac Single-Family Loans dataset, which is used to create novel geographically based features on a per loan basis. The model is trained on an imbalanced dataset which includes using 15.3 million unique loans with 326 million performance updates, achieving an AUC score of 0.984.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%          The declaration page         %%%%%%%%%%%%%%%%%%  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter*{Declaration}
+\addcontentsline{toc}{chapter}{\numberline{}Declaration}
+The work in this thesis is based on research carried out at the Department of Engineering, University of Bristol. No part of this thesis has been submitted elsewhere for any other degree or qualification and it is all
+my own work unless referenced to the contrary in the text.
+
+
+
+\vspace{2in}
+\noindent \textbf{Copyright \copyright\; 2018 by Michael J. Cooper}.\\
+``The copyright of this thesis rests with the author.  No quotations
+from it should be published without the author's prior written consent
+and information derived from it should be acknowledged''.
+
+\vspace{1.5in}
+\noindent \textbf{References}.\\
+All references are hyper-linked to the bibliography.
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%          Executive Summary         %%%%%%%%%%%%%%%%%%  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+\thispagestyle{empty}
+\addcontentsline{toc}{chapter}{\numberline{}Executive Summary}
+% \chapter*{Executive Summary}
+\begin{center}
+  \vspace*{0cm}
+  \textbf{\LARGE Executive Summary}
+\end{center}
+
+The purpose of this thesis is to explore the effectiveness of deep learning on Mortgage Default Prediction. The 2007-09 financial crisis led many independent examinations on both large and medium-sized banks. The overriding conclusions from these examinations were that banks must improve their credit risk management, specifically outlining the expectation to have adequate early warning systems in place to identify high-risk loans ahead of time. These conclusions layout the main motivation for this thesis.  
+
+We defined the Mortgage Default classification problem as the following: given a set of features for a mortgage at a specific point in time, output a prediction probability indicating whether the mortgage was more likely to be Fully Paid or Default at the end of the loan period. We used the Freddie Mac Single-Family Loans dataset which contains fully amortising 15, 20, and 30-year fixed-rate mortgages, covering approximately 60\% of all mortgages originated in the U.S. from January 1999 to January 2017. Each loan has monthly performance updates which include information such as Current Unpaid Balance, Status\footnote{The status of a loan is defined in this work as either current, 30, 60, 90+ days delinquent, Foreclosed, REO (Real-Estate Owned) or Fully Paid.}, Loan Age, etc...
+
+In order to assign a classification label, we only considered loans that had finished and therefore had a final state. After cleaning the data, we had 15.2m Fully Paid and 85k Default loans with approximately 326m performance updates. Using the conclusions from previous related work, we introduced new features to the data based on geographical location and individual loan performance, as well as adding economic data such as Housing Price Index, Unemployment rates, and National Interest rates. We then introduced the same set of features but which only consider the recent past, i.e. the last 12 months. We found that these recent past features are more effective when applied to economic and geographical based features and less so when applied to individual loan performance features. 
+
+Our results section compares a variety of optimisation methods; these include resampling, normalisation, regularisation and cost-sensitive learning. We also evaluated performance under different feature selections and model architectures, where all comparisons are evaluated using 5-fold cross-validation. The model achieves an AUC score of 0.984 under the optimum choice of parameters and techniques. The following paragraphs will cover a subset of these methods and techniques in more detail, outlining the result achieved and conclusions drawn. 
+
+As observed from the difference between the number of Fully Paid and Default loans, there is a significant class imbalance. We approach this problem using two methods; a weighted loss function and resampling techniques. We weight the loss function such that, for each class, the output of the loss function is proportional to the inverse class ratio. We found that this alone did not produce the desired results, the Recall (rate of correctly classified Default instances) value was still significantly lower than desired at 0.413, with an AUC of 0.702. We observe that when no re-sampling method is applied, irrespective of the weighted class ratios, the model performs poorly. We hypothesise that because the minority class instances are processed so infrequently, it makes the decision regions very small relative to the overall vector space and therefore it is difficult for the network to converge optimally. 
+
+We therefore applied different resampling methods in order to correct the class-imbalance and then evaluated their effectiveness. We compared the Synthetic Minority Over-Sampling Technique (SMOTE) with a basic random under-sampling method, at a variety of class ratios. We found that SMOTE does not outperform random under-sampling at any class ratio, with the optimal resampling method being random under-sampling at a class ratio of 15:85 (Default : Fully Paid).
+
+We tested several different model architectures at varying depths and found that the optimum consists of 2 hidden layers each with 100 nodes. Across all architectures, we find that two hidden layers perform better than either one or five, and five perform better than one. These results suggest that adding more than one hidden layer allows the model to learn more complex non-linear relationships, directly resulting in higher predictive power and performance. The linear model (0 hidden layers) has the lowest AUC and Recall values. This result suggests there exist complex non-linear relationships in the data that cannot be separated using linear regression. 
+
+We evaluated the model's performance under a variety of different feature sets. As previously stated, the optimum AUC score of the model was 0.984. This was achieved by evaluating the prediction output for each monthly performance update across the lifetime of a loan. Most interestingly, we decided to remove all monthly performance updates, with the exception of the first (the origin point of the loan). We then trained the model using only this subset of data where only a single labelled input vector exists per loan, and this achieved an AUC score of 0.707. Additionally, we trained the model with and without the additional features we added to the data set (as discussed previously); without this the model achieves an AUC score of 0.893, and with, it achieved the optimum value of 0.984.      
+
+In conclusion, we confirmed that a deep neural network (0.984 AUC) significantly outperforms a basic linear regression model (0.799 AUC), therefore validating the performance benefits of neural network models in this domain. If we compare our work to similar research as published by \cite{similar_paper_bagherpour} and \cite{similar_paper_deng}, both papers implement models that attempt to classify loans that are 'Paying' versus 'Default' (our work looks at 'Default' versus 'Fully Paid' and does not consider active loans) using a logistic regression model. They achieved AUC scores of 0.860 and 0.968 respectively. Our results compare favourably to these. However, we do note that there is a difference in the exact classification objective between our paper and theirs. 
+
+We showed that the addition of novel features improved the classification performance increasing the AUC score from 0.893 to 0.984. As far as we are aware, many of the additional features introduced have not been previously researched in academic literature. We believe that this is due to limitations in data sources up to now, and also the computational requirement to process data on this scale. We, therefore, believe this provides a new and useful contribution to the field. 
+
+Future work could include an investigation into specific sub-classes of loans. For example, it would be interesting to know how well a neural network would perform using only Non-Performing Loans (NPLs)\footnote{Loans are Non-Performing if they are 90+ days delinquent}. Similarly, it would be interesting to build separate models for different clusters within the data, for example, a predictive model for each state within the USA.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%     The acknowledgements page         %%%%%%%%%%%%%%%%%%  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \chapter*{Acknowledgements}
+% \addcontentsline{toc}{chapter}{\numberline{}Acknowledgements}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%    tableofcontents, listoffigures and listoftables       %%%%%%%%%
+%%%%%%%%        Command if you do not have  them                  %%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \pagenumbering{roman}
+
+\tableofcontents
+% \pagenumbering{roman}
+
+\clearpage
+
+\renewcommand*\listtablename{List of Tables}
+\listoftables
+\addcontentsline{toc}{chapter}{\numberline{}\listtablename}
+
+\clearpage
+
+\renewcommand*\listfigurename{List of Figures}
+\listoffigures
+\addcontentsline{toc}{chapter}{\numberline{}\listfigurename}
+
+\cleardoublepage
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%   END OF FRONT PAGE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+
+

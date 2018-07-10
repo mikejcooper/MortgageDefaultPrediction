@@ -1,0 +1,24 @@
+%NAME: showlabels.sty
+% gil@svax.cs.cornell.edu (Gil Neiger)
+%
+% Change \label, \ref, and \pageref to show labels in line
+%
+
+\def\ref#1{\@ifundefined{r@#1}{\mbox{\tt#1?}\@warning
+   {Reference `#1' on page \thepage \space 
+    undefined}}{\edef\@tempa{\@nameuse{r@#1}}\expandafter
+    \@car\@tempa \@nil\null}}
+
+\def\pageref#1{\@ifundefined{r@#1}{\mbox{\tt#1?}\@warning
+   {Reference `#1' on page \thepage \space 
+    undefined}}{\edef\@tempa{\@nameuse{r@#1}}\expandafter
+    \@cdr\@tempa\@nil\null}}
+
+\def\label#1{\@bsphack\if@filesw {\let\thepage\relax
+	\xdef\@gtempa{\write\@auxout{\string
+		\newlabel{#1}{{\@currentlabel}{\thepage}}}}}\@gtempa
+	\if@nobreak \ifvmode\nobreak\fi\fi\fi\@esphack
+	\mbox{\tt[#1]}}
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
